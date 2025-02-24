@@ -1,9 +1,10 @@
 import express from "express";
-import { handleGetReq, handlePostReq} from "../controllers";
+import {handleShortenerUrlGenerator, handleUrlRedirect} from "../controllers";
 
 const router =express.Router()
 
-// router.post('/',handlePostReq)
-router.get('/',handleGetReq)
+router.post('/',handleShortenerUrlGenerator)
+router.get('/:shortID',handleUrlRedirect)
+
 
 export default router
