@@ -1,8 +1,13 @@
 import express from 'express'
 import shortenerUrlRouter from './routes'
+import mongoDBConnection from './connection'
 
 const app = express()
 const PORT = 3001
+
+mongoDBConnection('mongodb://127.0.0.1:27017/shortenerurldb')
+.then(()=>console.log("MongoDB is connected successfully"))
+.catch((error)=>console.log(`Error during connecting MongoDB ${error}`))
 
 app.use(express.json())
 
