@@ -56,8 +56,8 @@ export async function handleUserSignUp(req: Request, res: Response) {
             email,
             password: hashedPassword
         })
-        if(!user){
-            res.status(400).json({mesage:"unavailable to create user"})
+        if (!user) {
+            res.status(400).json({ mesage: "unavailable to create user" })
             return
         }
         res.status(200).json({ message: "User successfully created", username, email })
