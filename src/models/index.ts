@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Mongoose, Schema } from "mongoose";
 
 
 const urlSchema = new Schema({
@@ -11,10 +11,43 @@ const urlSchema = new Schema({
         type: String,
         required: true
     },
-    visitHistory: [{ timestamp: { type: Number } }]
+    visitHistory: [{ timestamp: { type: Date } }]
 
 }, { timestamps: true })
 
-const URL= mongoose.model("url",urlSchema)
+export const URL = mongoose.model("url", urlSchema)
 
-export default URL
+const userSchema = new Schema({
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    }
+}, { timestamps: true })
+
+export const USERS = mongoose.model("users", userSchema)
+
+
+const userToSessionIDSchema = new Schema({
+    sessionID: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    }
+})
+
+export const USERTOSESSION = mongoose.model("usertosessionsid", userToSessionIDSchema) 
