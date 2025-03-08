@@ -1,6 +1,8 @@
-import express from 'express'
-import shortenerUrlRouter from './routes'
-import mongoDBConnection from './connection'
+import dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
+import shortnerUrlRouter from './routes';
+import mongoDBConnection from './connection';
 import cookieParser from 'cookie-parser';
 
 const app = express()
@@ -14,6 +16,6 @@ app.use(express.json())
 app.use(cookieParser());
 
 
-app.use('/shortenerurl',shortenerUrlRouter)
+app.use('/shortnerurl',shortnerUrlRouter)
 
 app.listen(PORT, () => console.log(`Server is started at port ${PORT}`))

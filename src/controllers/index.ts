@@ -2,11 +2,12 @@ import { Request, Response } from "express";
 import shortid from "shortid";
 import { URL, USERS } from "../models";
 import bcrypt from "bcrypt"
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import { setUser } from "../services/auth";
 
+//short url generator .......................................
 
-export async function handleShortenerUrlGenerator(req: Request, res: Response) {
+export async function handleShortnerUrlGenerator(req: Request, res: Response) {
     try {
         const { url } = req.body
         if (!url) {
@@ -27,6 +28,8 @@ export async function handleShortenerUrlGenerator(req: Request, res: Response) {
     }
 }
 
+//handle short url redirect..............................................
+
 export async function handleUrlRedirect(req: Request, res: Response) {
     try {
         const { shortID } = req.params
@@ -46,6 +49,8 @@ export async function handleUrlRedirect(req: Request, res: Response) {
 
 }
 
+// Handle user signUP.................................................................................
+
 export async function handleUserSignUp(req: Request, res: Response) {
     try {
         const { username, email, password } = req.body
@@ -60,31 +65,53 @@ export async function handleUserSignUp(req: Request, res: Response) {
             res.status(400).json({ mesage: "unavailable to create user" })
             return
         }
-        res.status(200).json({ message: "User successfully created", username, email })
+        res.status(200).json({
+            message: "User successfully created",
+            username,
+        })
     } catch (error) {
         res.status(500).json({ message: "Server errror", error: error })
     }
 }
+
+
+//Handle user Login.................................................................
 
 export async function handleUserLogin(req: Request, res: Response) {
     try {
         const { email, password } = req.body
         const user = await USERS.findOne({ email })
         if (!user) {
-            res.status(400).json({ message: "Invalid credentials" })
+            res.status(400).json({
+                message: "Wrong Email ID or Paswaord"
+            })
             return
         }
         const isMatch = await bcrypt.compare(password, user.password)
 
         if (!isMatch) {
-            res.status(400).json({ mesage: "Invalid credentials" })
+            res.status(400).json({
+                mesage: "Wrong Email ID or Paswaord"
+            })
             return
         }
-        const sessionid = uuidv4();             //we send this id to the user in the cookies
-        setUser(sessionid, email);
-        res.cookie("uuid", sessionid)
-        res.status(200).json({ message: "Login Successfully", uuid: sessionid })
+
+        // const sessionid = uuidv4();             //we send this id to the user in the cookies
+
+        const token = await setUser(user)    //create a jwt token  with a combination of payload(mongoose object id-email ) and secret key
+        
+        console.log(token)
+        res.cookie("uuid", token)
+
+        res.status(200).json({
+            Stauts: "OK",
+            message: "Login Successfully",
+            uuid:  token
+        })
     } catch (error) {
-        res.status(500).json({ message: "Somethings went wrong in server", error: error })
+        res.status(500).json({
+            message: "Somethings went wrong in server",
+            error: error
+        })
     }
 }

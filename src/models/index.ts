@@ -37,17 +37,17 @@ const userSchema = new Schema({
 export const USERS = mongoose.model("users", userSchema)
 
 
-const userToSessionIDSchema = new Schema({
-    sessionID: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    }
-})
+// const userToSessionIDSchema = new Schema({
+//     sessionID: {
+//         type: String,
+//         required: true,
+//         unique: true
+//     },
+//     email: {
+//         type: String,
+//         required: true,
+//         unique: true
+//     }
+// })
 
-export const USERTOSESSION = mongoose.model("usertosessionsid", userToSessionIDSchema) 
+// export const USERTOSESSION = mongoose.model("usertosessionsid", userToSessionIDSchema) 
